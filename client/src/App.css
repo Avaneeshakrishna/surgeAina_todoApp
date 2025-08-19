@@ -1,0 +1,119 @@
+/* App.css - Modern To-Do List Styles */
+body {
+  background: #23272f;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.todo-container {
+  background: #2c313a;
+  max-width: 420px;
+  margin: 40px auto;
+  padding: 32px 24px 24px 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.todo-title {
+  color: #fff;
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.todo-input-group {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.todo-input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  background: #23272f;
+  color: #fff;
+}
+
+.todo-add-btn {
+  background: #4f8cff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.todo-add-btn:hover {
+  background: #357ae8;
+}
+
+.todo-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.todo-item {
+  background: #23272f;
+  color: #fff;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s;
+}
+.todo-item.completed .todo-text {
+  text-decoration: line-through;
+  color: #aaa;
+}
+
+.todo-text {
+  flex: 1;
+  font-size: 1.1rem;
+}
+
+.todo-edit-input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+  background: #2c313a;
+  color: #fff;
+}
+
+.todo-edit-btn, .todo-delete-btn, .todo-complete-btn, .todo-save-btn, .todo-cancel-btn {
+  background: #444b57;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.todo-edit-btn:hover {
+  background: #4f8cff;
+}
+.todo-delete-btn:hover {
+  background: #ff4f4f;
+}
+.todo-complete-btn:hover {
+  background: #4fff8c;
+  color: #23272f;
+}
+.todo-save-btn:hover {
+  background: #4f8cff;
+}
+.todo-cancel-btn:hover {
+  background: #aaa;
+  color: #23272f;
+}
