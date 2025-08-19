@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './App.css';
 
-const API_URL = 'http://localhost:5000/tasks'; // Update if backend is deployed
+const API_URL = 'https://surgeaina-todoapp.onrender.com/tasks'; // Update if backend is deployed
 
 function App() {
   const [tasks, setTasks] = useState([]);
