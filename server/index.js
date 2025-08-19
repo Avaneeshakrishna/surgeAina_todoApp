@@ -4,11 +4,12 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
-app.use(cors({
-  origin: 'https://surge-aina-todo-8utjup@py-avaneeshs-projects-f71dc444.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
-}));
+// app.use(cors({
+//   origin: 'https://surge-aina-todo-8utjup@py-avaneeshs-projects-f71dc444.vercel.app',
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//   credentials: true
+// }));
+app.use(cors());
 app.use(express.json());
 
 // MongoDB connection
