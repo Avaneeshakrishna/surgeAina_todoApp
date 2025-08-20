@@ -1,48 +1,56 @@
-import 'dotenv/config';
-import express from 'express';
-import mongoose from 'mongoose';
-import cors from 'cors';
+// server/index.js
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
 
 const app = express();
 
-/** -------- CORS (liberal by default; lock down with CORS_ORIGINS) -------- */
-let corsOptions = { origin: true }; // reflect request origin
+/* ---------- CORS ---------- */
+let corsOptions = { origin: true }; // reflect the request origin (good for quick tests)
 if (process.env.CORS_ORIGINS) {
   const allow = process.env.CORS_ORIGINS.split(',').map(s => s.trim());
-  corsOptions = { origin: allow, methods: ['GET','POST','PUT','DELETE','OPTIONS'], allowedHeaders: ['Content-Type'] };
+  corsOptions = {
+    origin: allow,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type']
+  };
 }
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 
+/* ---------- Middlewares ---------- */
 app.use(express.json());
 
-/** -------------------- MongoDB -------------------- */
+/* ---------- MongoDB ---------- */
 const uri = process.env.MONGO_URI;
 if (!uri) {
-  console.error('Missing MONGO_URI in environment');
+  console.error('❌ Missing MONGO_URI in environment');
   process.exit(1);
 }
-
-mongoose.connect(uri, { serverSelectionTimeoutMS: 15000 })
+mongoose
+  .connect(uri, { serverSelectionTimeoutMS: 15000 })
   .then(() => console.log('✅ MongoDB connected'))
   .catch(err => {
     console.error('❌ Mongo connection error:', err?.message || err);
     process.exit(1);
   });
 
-/** -------------------- Model -------------------- */
-const taskSchema = new mongoose.Schema({
-  title: { type: String, required: true, trim: true },
-  completed: { type: Boolean, default: false }
-}, { timestamps: true });
-
+/* ---------- Model ---------- */
+const taskSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true, trim: true },
+    completed: { type: Boolean, default: false }
+  },
+  { timestamps: true }
+);
 const Task = mongoose.model('Task', taskSchema);
 
-/** -------------------- Routes -------------------- */
-// Health check
+/* ---------- Routes ---------- */
+// Health
 app.get('/', (_req, res) => res.send('OK'));
 
-// Get all tasks
+// Get all
 app.get('/tasks', async (_req, res) => {
   try {
     const tasks = await Task.find().sort({ createdAt: 1 });
@@ -52,20 +60,19 @@ app.get('/tasks', async (_req, res) => {
   }
 });
 
-// Create task
+// Create
 app.post('/tasks', async (req, res) => {
   try {
-    const { title } = req.body || {};
-    if (!title || !title.trim()) return res.status(400).json({ error: 'Title is required' });
-
-    const task = await Task.create({ title: title.trim() });
+    const title = (req.body?.title || '').trim();
+    if (!title) return res.status(400).json({ error: 'Title is required' });
+    const task = await Task.create({ title });
     res.status(201).json(task);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
 
-// Update task
+// Update
 app.put('/tasks/:id', async (req, res) => {
   try {
     const update = {};
@@ -80,7 +87,7 @@ app.put('/tasks/:id', async (req, res) => {
   }
 });
 
-// Delete task
+// Delete
 app.delete('/tasks/:id', async (req, res) => {
   try {
     const task = await Task.findByIdAndDelete(req.params.id);
@@ -91,6 +98,4 @@ app.delete('/tasks/:id', async (req, res) => {
   }
 });
 
-/** -------------------- Listen -------------------- */
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 API listening on :${PORT}`));
+module.exports = app; // ✅ export the app (so server.js can call listen)
